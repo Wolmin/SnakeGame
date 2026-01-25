@@ -7,6 +7,16 @@ class Program
 {
     static void Main()
     {
+        while (true)
+        {
+            bool reset = RunGame();
+            if (!reset)
+                break;
+        }
+    }
+
+    static bool RunGame()
+    {
         if (OperatingSystem.IsWindows())
         {
             Console.WindowHeight = 4;
@@ -148,8 +158,6 @@ class Program
             Console.SetCursorPosition(head.xPos, head.yPos);
             Console.Write("■");
 
-
-
             // Collision with self or wall
             if (head.xPos == 0 || head.xPos == screenWidth - 1 || head.yPos == 0 || head.yPos == screenHeight - 1)
             {
@@ -160,7 +168,9 @@ class Program
                 Console.SetCursorPosition(screenWidth / 5, screenHeight / 2 + 1);
                 Console.WriteLine("Your score is: " + score);
                 Console.SetCursorPosition(screenWidth / 5, screenHeight / 2 + 2);
-                Environment.Exit(0);
+                Console.WriteLine("Press R to play again or any other key to exit...");
+                var key = Console.ReadKey(true).Key;
+                return key == ConsoleKey.R;
             }
 
             for (int i = 2; i < positions.Count(); i += 2)
@@ -170,11 +180,13 @@ class Program
                     Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.SetCursorPosition(screenWidth / 5, screenHeight / 2);
-                    //???
+                    Console.WriteLine("Game Over");
                     Console.SetCursorPosition(screenWidth / 5, screenHeight / 2 + 1);
                     Console.WriteLine("Your score is: " + score);
                     Console.SetCursorPosition(screenWidth / 5, screenHeight / 2 + 2);
-                    Environment.Exit(0);
+                    Console.WriteLine("Press R to play again or any other key to exit...");
+                    var key = Console.ReadKey(true).Key;
+                    return key == ConsoleKey.R;
                 }
             }
 
