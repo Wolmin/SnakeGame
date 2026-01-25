@@ -9,12 +9,14 @@ class Program
     {
         if (OperatingSystem.IsWindows())
         {
-            Console.WindowHeight = 16;
-            Console.WindowWidth = 32;
+            Console.WindowHeight = 4;
+            Console.WindowWidth = 4;
         }
 
-        int screenWidth = Console.WindowWidth;
-        int screenHeight = Console.WindowHeight;
+        // int screenWidth = Console.WindowWidth;
+        // int screenHeight = Console.WindowHeight;
+        int screenWidth = 8;
+        int screenHeight = 8;
 
         Random randomNumber = new Random();
         Pixel head = new Pixel();
@@ -26,7 +28,6 @@ class Program
         string movement = "RIGHT";
         int score = 0;
 
-        List<int> count = new List<int>();
         List<int> positions = new List<int>();
 
         positions.Add(head.xPos);
@@ -35,14 +36,14 @@ class Program
         DateTime time = DateTime.Now;
 
         string obstacle = "*";
-        int obstacleXpos = randomNumber.Next(1, screenWidth);
-        int obstacleYpos = randomNumber.Next(1, screenHeight);
+        int obstacleXpos = randomNumber.Next(1, screenWidth - 1);
+        int obstacleYpos = randomNumber.Next(1, screenHeight - 1);
 
         while (true)
         {
             Console.Clear();
 
-            //Draw Obstacle
+            // Draw Obstacle
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.SetCursorPosition(obstacleXpos, obstacleYpos);
             Console.Write(obstacle);
@@ -80,21 +81,15 @@ class Program
             Console.ForegroundColor =  ConsoleColor.Black;
             Console.WriteLine("Score: " + score);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("H");
+            Console.WriteLine("");
 
-            for (int i = 0; i < count.Count(); i++)
+            for (int i = 0; i < positions.Count(); i+=2)
             {
-                Console.SetCursorPosition(count[i], count[i + 1]);
+                Console.SetCursorPosition(positions[i], positions[i + 1]);
                 Console.Write("■");
             }
 
             //Draw Snake
-            Console.SetCursorPosition(head.xPos, head.yPos);
-            Console.Write("■");
-            Console.SetCursorPosition(head.xPos, head.yPos);
-            Console.Write("■");
-            Console.SetCursorPosition(head.xPos, head.yPos);
-            Console.Write("■");
             Console.SetCursorPosition(head.xPos, head.yPos);
             Console.Write("■");
 
@@ -137,14 +132,17 @@ class Program
             if (head.xPos == obstacleXpos && head.yPos == obstacleYpos)
             {
                 score++;
-                obstacleXpos = randomNumber.Next(1, screenWidth);
-                obstacleYpos = randomNumber.Next(1, screenHeight);
+                obstacleXpos = randomNumber.Next(1, screenWidth - 1);
+                obstacleYpos = randomNumber.Next(1, screenHeight - 1);
+            }
+            else
+            {
+                positions.RemoveAt(positions.Count - 1);
+                positions.RemoveAt(positions.Count - 1);
             }
 
             positions.Insert(0, head.xPos);
             positions.Insert(1, head.yPos);
-            positions.RemoveAt(positions.Count - 1);
-            positions.RemoveAt(positions.Count - 1);
 
             // Collision with self or wall
             if (head.xPos == 0 || head.xPos == screenWidth - 1 || head.yPos == 0 || head.yPos == screenHeight - 1)
@@ -159,9 +157,9 @@ class Program
                 Environment.Exit(0);
             }
 
-            for (int i = 0; i < count.Count(); i += 2)
+            for (int i = 2; i < positions.Count(); i += 2)
             {
-                if (head.xPos == count[i] && head.yPos == count[i + 1])
+                if (head.xPos == positions[i] && head.yPos == positions[i + 1])
                 {
                     Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Red;
