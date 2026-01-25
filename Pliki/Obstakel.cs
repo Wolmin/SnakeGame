@@ -1,4 +1,4 @@
-public class Obstakel
+public class Obstacle
 
 {
 
@@ -6,7 +6,7 @@ public class Obstakel
 
     public int yPos { get; set; }
 
-    public ConsoleColor schermKleur { get; set; }
+    public ConsoleColor color { get; set; }
 
     public string character { get; set; }
 

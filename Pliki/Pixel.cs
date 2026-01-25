@@ -6,7 +6,7 @@ public class Pixel
 
     public int yPos { get; set; }
 
-    public ConsoleColor schermKleur { get; set; }
+    public ConsoleColor color { get; set; }
 
     public string character { get; set; }
 
