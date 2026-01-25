@@ -15,8 +15,8 @@ class Program
 
         // int screenWidth = Console.WindowWidth;
         // int screenHeight = Console.WindowHeight;
-        int screenWidth = 8;
-        int screenHeight = 8;
+        int screenWidth = 16;
+        int screenHeight = 16;
 
         Random randomNumber = new Random();
         Pixel head = new Pixel();
@@ -39,8 +39,64 @@ class Program
         int obstacleXpos = randomNumber.Next(1, screenWidth - 1);
         int obstacleYpos = randomNumber.Next(1, screenHeight - 1);
 
+        Console.CursorVisible = false;
+
         while (true)
         {
+            ConsoleKeyInfo info = default;
+            if (Console.KeyAvailable)
+            {
+                info = Console.ReadKey(intercept: true);
+            }
+
+            //Game Logic
+            switch (info.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    movement = movement != "DOWN" ? "UP" : "DOWN";
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    movement = movement != "UP" ? "DOWN" : "UP";
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    movement = movement != "RIGHT" ? "LEFT" : "RIGHT";
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    movement = movement != "LEFT" ? "RIGHT" : "LEFT";
+                    break;
+            }
+
+            if (movement == "UP")
+                head.yPos--;
+
+            if (movement == "DOWN")
+                head.yPos++;
+
+            if (movement == "LEFT")
+                head.xPos--;
+
+            if (movement == "RIGHT")
+                head.xPos++;
+
+            // Hitting the obstacle
+            if (head.xPos == obstacleXpos && head.yPos == obstacleYpos)
+            {
+                score++;
+                obstacleXpos = randomNumber.Next(1, screenWidth - 1);
+                obstacleYpos = randomNumber.Next(1, screenHeight - 1);
+            }
+            else
+            {
+                positions.RemoveAt(positions.Count - 1);
+                positions.RemoveAt(positions.Count - 1);
+            }
+
+            positions.Insert(0, head.xPos);
+            positions.Insert(1, head.yPos);
+
             Console.Clear();
 
             // Draw Obstacle
@@ -81,7 +137,6 @@ class Program
             Console.ForegroundColor =  ConsoleColor.Black;
             Console.WriteLine("Score: " + score);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("");
 
             for (int i = 0; i < positions.Count(); i+=2)
             {
@@ -93,56 +148,7 @@ class Program
             Console.SetCursorPosition(head.xPos, head.yPos);
             Console.Write("■");
 
-            ConsoleKeyInfo info = Console.ReadKey();
 
-            //Game Logic
-            switch (info.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    movement = "UP";
-                    break;
-
-                case ConsoleKey.DownArrow:
-                    movement = "DOWN";
-                    break;
-
-                case ConsoleKey.LeftArrow:
-                    movement = "LEFT";
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    movement = "RIGHT";
-                    break;
-
-            }
-
-            if (movement == "UP")
-                head.yPos--;
-
-            if (movement == "DOWN")
-                head.yPos++;
-
-            if (movement == "LEFT")
-                head.xPos--;
-
-            if (movement == "RIGHT")
-                head.xPos++;
-
-            // Hitting the obstacle
-            if (head.xPos == obstacleXpos && head.yPos == obstacleYpos)
-            {
-                score++;
-                obstacleXpos = randomNumber.Next(1, screenWidth - 1);
-                obstacleYpos = randomNumber.Next(1, screenHeight - 1);
-            }
-            else
-            {
-                positions.RemoveAt(positions.Count - 1);
-                positions.RemoveAt(positions.Count - 1);
-            }
-
-            positions.Insert(0, head.xPos);
-            positions.Insert(1, head.yPos);
 
             // Collision with self or wall
             if (head.xPos == 0 || head.xPos == screenWidth - 1 || head.yPos == 0 || head.yPos == screenHeight - 1)
@@ -172,7 +178,7 @@ class Program
                 }
             }
 
-            Thread.Sleep(50);
+            Thread.Sleep(250);
         }
     }
 }
