@@ -25,7 +25,7 @@ class Program
         head.yPos = screenHeight / 2;
         head.color = ConsoleColor.Red;
 
-        string movement = "RIGHT";
+        string movement = "";
         int score = 0;
 
         List<int> positions = new List<int>();
