@@ -1,13 +1,13 @@
-public class Obstakel
+public class Obstacle
 
 {
 
-    public int Xpos { get; set; }
+    public int xPos { get; set; }
 
-    // ?
+    public int yPos { get; set; }
 
-    public ConsoleColor schermKleur { get; set; }
+    public ConsoleColor color { get; set; }
 
-    public string karacter { get; set; }
+    public string character { get; set; }
 
 }
